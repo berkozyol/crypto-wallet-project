@@ -1,0 +1,20 @@
+:root {
+    --primary-color: #4a90e2;
+    --buy-color: #2ecc71;
+    --sell-color: #e74c3c;
+    --bg-color: #f4f7f6;
+    --text-color: #2c3e50;
+}
+
+body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg-color); color: var(--text-color); padding: 20px; max-width: 500px; margin: 0 auto; }
+.asset-card { background: white; padding: 15px; border-radius: 8px; margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; }
+.controls { display: flex; gap: 5px; align-items: center; }
+input { width: 60px; padding: 5px; border: 1px solid #ccc; border-radius: 4px; }
+
+button { border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; color: white; font-weight: bold; }
+button:hover { opacity: 0.8; }
+.btn-buy { background-color: var(--buy-color); }
+.btn-sell { background-color: var(--sell-color); }
+
+#activity-log { list-style: none; padding: 0; }
+#activity-log li { background: #fff; margin-bottom: 5px; padding: 10px; border-left: 4px solid var(--primary-color); border-radius: 4px; }
