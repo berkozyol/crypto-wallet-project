@@ -1,20 +1,115 @@
 :root {
-    --primary-color: #4a90e2;
     --buy-color: #2ecc71;
-    --sell-color: #e74c3c;
-    --bg-color: #f4f7f6;
-    --text-color: #2c3e50;
+    --primary: #4a90e2;
+    --glass: rgba(255, 255, 255, 0.88);
 }
 
-body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg-color); color: var(--text-color); padding: 20px; max-width: 500px; margin: 0 auto; }
-.asset-card { background: white; padding: 15px; border-radius: 8px; margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; }
-.controls { display: flex; gap: 5px; align-items: center; }
-input { width: 60px; padding: 5px; border: 1px solid #ccc; border-radius: 4px; }
+body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* Arka Plan Görseli */
+    background-image: url('indir.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
 
-button { border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; color: white; font-weight: bold; }
-button:hover { opacity: 0.8; }
-.btn-buy { background-color: var(--buy-color); }
-.btn-sell { background-color: var(--sell-color); }
+/* HABER BANDI */
+.news-ticker {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    color: #f1c40f;
+    padding: 12px 0;
+    overflow: hidden;
+    z-index: 1000;
+    border-bottom: 2px solid #f1c40f;
+}
 
-#activity-log { list-style: none; padding: 0; }
-#activity-log li { background: #fff; margin-bottom: 5px; padding: 10px; border-left: 4px solid var(--primary-color); border-radius: 4px; }
+.ticker-wrap {
+    display: inline-block;
+    white-space: nowrap;
+    padding-left: 100%;
+    animation: ticker 60s linear infinite;
+}
+
+.ticker-item {
+    display: inline-block;
+    padding-right: 100px;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+@keyframes ticker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+}
+
+/* ANA YAPI */
+.app-wrapper {
+    display: flex;
+    gap: 25px;
+    width: 95%;
+    max-width: 1350px;
+    margin-top: 60px;
+    animation: fadeInUp 0.8s ease-out;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.main-card, .chart-card {
+    background: var(--glass);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 30px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.4);
+}
+
+.main-card { flex: 1; padding: 25px; max-width: 400px; }
+.chart-card { flex: 2.5; padding: 15px; min-height: 580px; position: relative; }
+
+#tradingview_chart { width: 100%; height: 100%; border-radius: 20px; overflow: hidden; }
+
+/* KARTLAR */
+h1 { text-align: center; margin: 0; color: #1a2a3a; letter-spacing: -1px; }
+#status-text { text-align: center; font-size: 12px; color: #d35400; font-weight: bold; margin-bottom: 20px; }
+
+.asset-card {
+    background: white;
+    padding: 16px;
+    border-radius: 18px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.asset-card:hover { transform: scale(1.03); border: 2px solid var(--primary); }
+
+.controls { display: flex; gap: 8px; }
+input { width: 55px; padding: 8px; border: 2px solid #f0f0f0; border-radius: 10px; outline: none; }
+
+button {
+    border: none; padding: 10px 15px; border-radius: 10px;
+    cursor: pointer; color: white; font-weight: bold;
+    background-color: var(--buy-color); transition: 0.3s;
+}
+
+button:hover { background-color: #27ae60; }
+
+.log-section { margin-top: 20px; border-top: 1px solid #eee; padding-top: 15px; }
+#activity-log { list-style: none; padding: 0; max-height: 100px; overflow-y: auto; font-size: 12px; }
+#activity-log li { padding: 8px; border-bottom: 1px solid #f9f9f9; color: #555; }
