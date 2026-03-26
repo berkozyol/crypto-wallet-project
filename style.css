@@ -76,16 +76,16 @@ body {
 
 .main-card { flex: 1; padding: 25px; max-width: 420px; }
 
-/* Grafik Kartı Düzeltmesi */
+
 .chart-card { 
-    flex: 3; /* Grafiğe daha çok yer ver */
+    flex: 3; 
     padding: 15px; 
-    min-height: 650px; /* Grafik için minimum yükseklik */
+    min-height: 650px; 
     position: relative; 
-    overflow: visible; /* TradingView'ın overflow'unu engelle */
+    overflow: visible; 
 }
 
-/* TOPLAM BAKİYE ALANI */
+
 .total-balance {
     background: rgba(74, 144, 226, 0.1);
     padding: 20px;
@@ -117,12 +117,12 @@ h1 { text-align: center; margin: 0; color: #1a2a3a; font-size: 2rem; }
 
 .asset-card:hover { transform: translateY(-3px); border: 2px solid var(--primary); }
 
-/* Fiyat Renk Değişimi Mantığı (YENİ) */
+
 .price-tag { transition: color 0.4s ease; font-weight: bold; } /* Sadece fiyata etki etsin */
 .price-up .price-tag { color: var(--buy-color) !important; }
 .price-down .price-tag { color: var(--sell-color) !important; }
 
-/* Bakiye Yazısı Sabit Kalsın */
+
 .balance-tag { color: #888; transition: none; } 
 
 .controls input { width: 60px; padding: 10px; border: 2px solid #eee; border-radius: 12px; outline: none; }
@@ -136,7 +136,7 @@ button {
 #activity-log { list-style: none; padding: 0; max-height: 120px; overflow-y: auto; font-size: 13px; }
 #activity-log li { padding: 6px 0; border-bottom: 1px solid #f1f1f1; color: #444; }
 
-/* Mevcut CSS'e ekle veya güncelle */
+
 :root {
     --buy-color: #2ecc71;
     --sell-color: #e74c3c;
@@ -144,10 +144,10 @@ button {
     --glass: rgba(255, 255, 255, 0.88);
 }
 
-/* Buton Grubu Düzeni */
+
 .controls { 
     display: flex; 
-    flex-direction: column; /* Input üstte, butonlar altta olsun diye */
+    flex-direction: column; 
     gap: 5px; 
     align-items: flex-end;
 }
@@ -180,7 +180,7 @@ button {
 
 button:active { transform: scale(0.9); }
 
-/* Fiyat yanarken bakiye yanmasın demiştin, o kural burada: */
+
 .price-tag { transition: color 0.4s; }
 .price-up .price-tag { color: var(--buy-color) !important; }
 .price-down .price-tag { color: var(--sell-color) !important; }

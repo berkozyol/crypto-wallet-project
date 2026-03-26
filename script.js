@@ -70,7 +70,7 @@ class CryptoWallet {
         }).join('');
     }
 
-    // Trade Fonksiyonu (Hem AL hem SAT)
+    
     trade(id, type) {
         const input = document.querySelector(`#input-${id}`);
         const amount = parseFloat(input.value);
