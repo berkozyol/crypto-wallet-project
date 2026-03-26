@@ -51,13 +51,13 @@ body {
     100% { transform: translateX(-100%); }
 }
 
-/* ANA PANEL YAPISI VE GRAFİK DÜZELTME */
+
 .app-wrapper {
     display: flex;
     gap: 25px;
-    width: 98%; /* Biraz daha genişlettik */
-    max-width: 1600px; /* Genişlettik ki grafik sığsın */
-    margin-top: 70px; /* Haber bandından uzaklaştırdık */
+    width: 98%; 
+    max-width: 1600px; 
+    margin-top: 70px; 
     animation: fadeIn 1s ease-out;
 }
 
