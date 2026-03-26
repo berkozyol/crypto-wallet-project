@@ -6,12 +6,6 @@ const initialData = `[
     { "id": 2, "name": "BNB", "symbol": "BNB", "balance": 10.0 }
 ]`;
 
-const coinInfoData = {
-    "btc": { title: "Bitcoin (BTC)", desc: "İlk kripto para birimidir. Merkeziyetsiz dijital altın olarak kabul edilir.", use: "Varlık koruma ve transfer." },
-    "eth": { title: "Ethereum (ETH)", desc: "Akıllı sözleşmeler ve merkeziyetsiz uygulamalar için lider platformdur.", use: "DeFi ve NFT ekosistemi." },
-    "bnb": { title: "Binance Coin (BNB)", desc: "Binance ekosisteminin temel taşıdır, işlem ücretlerinde indirim sağlar.", use: "BSC ağı yakıtı ve ödemeler." }
-};
-
 class CryptoWallet {
     constructor(jsonData) {
         this.assets = JSON.parse(jsonData);
