@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crypto Terminal</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
+
     <div class="news-ticker">
         <div class="ticker-wrap" id="ticker-wrap">
             <div class="ticker-item">📢 Ekonomi haberleri yükleniyor...</div>
@@ -14,33 +16,29 @@
     </div>
 
     <div class="app-wrapper">
+        
         <div class="main-card">
             <header>
                 <h1>Crypto Wallet</h1>
                 <p id="status-text">Bağlanılıyor...</p>
             </header>
+
             <div id="assets-list"></div>
+
             <div class="log-section">
                 <h3>İşlem Geçmişi</h3>
                 <ul id="activity-log"></ul>
             </div>
         </div>
+
         <div class="chart-card">
             <div id="tradingview_chart"></div>
         </div>
-    </div>
 
-    <div id="coin-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn">&times;</span>
-            <h2 id="modal-title"></h2>
-            <hr>
-            <p id="modal-desc"></p>
-            <div id="modal-use-case"></div>
-        </div>
     </div>
 
     <script type="module" src="script.js"></script>
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+
 </body>
 </html>
