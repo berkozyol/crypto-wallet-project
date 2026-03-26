@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Terminal</title>
+    <title>Crypto Terminal Pro</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
@@ -11,34 +11,33 @@
 
     <div class="news-ticker">
         <div class="ticker-wrap" id="ticker-wrap">
-            <div class="ticker-item">📢 Ekonomi haberleri yükleniyor...</div>
+            <div class="ticker-item">📢 Kripto piyasası verileri alınıyor...</div>
         </div>
     </div>
 
     <div class="app-wrapper">
-        
         <div class="main-card">
             <header>
                 <h1>Crypto Wallet</h1>
                 <p id="status-text">Bağlanılıyor...</p>
             </header>
-
-            <div id="assets-list"></div>
-
+            <div id="assets-list">
+                <p style="text-align:center; padding:20px;">Veriler yükleniyor, lütfen bekleyin...</p>
+            </div>
             <div class="log-section">
                 <h3>İşlem Geçmişi</h3>
-                <ul id="activity-log"></ul>
+                <ul id="activity-log">
+                    <li>Sistem başlatıldı...</li>
+                </ul>
             </div>
         </div>
 
         <div class="chart-card">
             <div id="tradingview_chart"></div>
         </div>
-
     </div>
 
-    <script type="module" src="script.js"></script>
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-
+    <script src="script.js"></script>
 </body>
 </html>

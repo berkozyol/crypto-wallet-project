@@ -1,109 +1,120 @@
-import { getLivePrices, fetchLiveNews } from './api.js';
-
-const initialData = `[
-    { "id": 0, "name": "Bitcoin", "symbol": "BTC", "balance": 0.25 },
-    { "id": 1, "name": "Ethereum", "symbol": "ETH", "balance": 1.50 },
-    { "id": 2, "name": "BNB", "symbol": "BNB", "balance": 10.0 }
-]`;
-
-class CryptoWallet {
-    constructor(jsonData) {
-        this.assets = JSON.parse(jsonData);
-        this.logs = [];
-        this.currentPrices = [];
-        this.prevPrices = {};
+// 1. VERİ ÇEKME FONKSİYONLARI
+async function getLivePrices() {
+    try {
+        const response = await fetch('https://api.binance.com/api/v3/ticker/price?symbols=["BTCUSDT","ETHUSDT","BNBUSDT"]');
+        if (!response.ok) throw new Error("API Hatası");
+        return await response.json();
+    } catch (error) {
+        console.error("Fiyat hatası:", error);
+        return [];
     }
-
-    refreshPrices(prices) {
-        this.currentPrices.forEach(p => this.prevPrices[p.symbol] = p.price);
-        this.currentPrices = prices;
-        this.updateUI();
-    }
-
-    calculateTotal() {
-        return this.assets.reduce((sum, asset) => {
-            const priceData = this.currentPrices.find(p => p.symbol === `${asset.symbol}USDT`);
-            return sum + (asset.balance * (priceData ? parseFloat(priceData.price) : 0));
-        }, 0).toLocaleString('tr-TR', { minimumFractionDigits: 2 });
-    }
-
-    updateUI() {
-        const list = document.querySelector("#assets-list");
-        if (!document.querySelector(".total-balance")) {
-            document.querySelector("header").insertAdjacentHTML('afterend', '<div class="total-balance"></div>');
-        }
-        document.querySelector(".total-balance").innerHTML = `<h2>Toplam Portföy <span>$${this.calculateTotal()}</span></h2>`;
-
-        list.innerHTML = this.assets.map((coin) => {
-            const pair = `${coin.symbol}USDT`;
-            const priceData = this.currentPrices.find(p => p.symbol === pair);
-            const currentPrice = priceData ? parseFloat(priceData.price).toFixed(2) : "0.00";
-            let colorClass = "";
-            if (this.prevPrices[pair]) {
-                if (parseFloat(currentPrice) > parseFloat(this.prevPrices[pair])) colorClass = "price-up";
-                else if (parseFloat(currentPrice) < parseFloat(this.prevPrices[pair])) colorClass = "price-down";
-            }
-
-            return `
-                <div class="asset-card ${colorClass}" onclick="window.showChart('${coin.symbol}')">
-                    <div style="display:flex; align-items:center;">
-                        <div>
-                            <strong>${coin.name}</strong> (${coin.symbol}) 
-                            <span class="info-icon" onclick="event.stopPropagation(); window.openDetails('${coin.symbol}')">ⓘ</span>
-                            <br><small><span class="price-tag">$${currentPrice}</span> | <span class="balance-tag">Bakiye: ${coin.balance.toFixed(4)}</span></small>
-                        </div>
-                    </div>
-                    <div class="controls">
-                        <input type="number" id="input-${coin.id}" value="0.1" step="0.01" onclick="event.stopPropagation()">
-                        <div class="btn-group">
-                            <button class="btn-buy" onclick="event.stopPropagation(); window.handleTrade(${coin.id}, 'buy')">AL</button>
-                            <button class="btn-sell" onclick="event.stopPropagation(); window.handleTrade(${coin.id}, 'sell')">SAT</button>
-                        </div>
-                    </div>
-                </div>`;
-        }).join('');
-    }
-
-    trade(id, type) {
-        const amount = parseFloat(document.querySelector(`#input-${id}`).value);
-        const asset = this.assets[id];
-        if (isNaN(amount) || amount <= 0) return;
-        if (type === 'buy') {
-            asset.balance += amount;
-            this.logs.push(`🟢 ${new Date().toLocaleTimeString()}: ${amount} ${asset.symbol} alındı.`);
-        } else if (asset.balance >= amount) {
-            asset.balance -= amount;
-            this.logs.push(`🔴 ${new Date().toLocaleTimeString()}: ${amount} ${asset.symbol} satıldı.`);
-        } else { alert("Yetersiz bakiye!"); return; }
-        this.renderLogs(); this.updateUI();
-    }
-
-    renderLogs() { document.querySelector("#activity-log").innerHTML = this.logs.map(log => `<li>${log}</li>`).reverse().join(''); }
 }
 
-const wallet = new CryptoWallet(initialData);
-window.handleTrade = (id, type) => wallet.trade(id, type);
+async function fetchLiveNews() {
+    try {
+        const rssUrl = encodeURIComponent('https://news.google.com/rss/search?q=kripto+ekonomi&hl=tr&gl=TR&ceid=TR:tr');
+        const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${rssUrl}`);
+        const data = await response.json();
+        return (data.status === 'ok' && data.items) ? data.items : [];
+    } catch (error) {
+        return [{ title: "Haberler şu an yüklenemiyor." }];
+    }
+}
+
+// 2. CÜZDAN AYARLARI
+let assets = [
+    { id: 0, name: "Bitcoin", symbol: "BTC", balance: 0.25 },
+    { id: 1, name: "Ethereum", symbol: "ETH", balance: 1.50 },
+    { id: 2, name: "Binance Coin", symbol: "BNB", balance: 10.0 }
+];
+
+let currentPrices = [];
+
+// 3. EKRANI GÜNCELLEME
+function updateUI() {
+    const list = document.getElementById("assets-list");
+    if (!list) return;
+
+    let total = 0;
+    let html = "";
+
+    assets.forEach(asset => {
+        const priceData = currentPrices.find(p => p.symbol === asset.symbol + "USDT");
+        const price = priceData ? parseFloat(priceData.price) : 0;
+        total += asset.balance * price;
+
+        html += `
+        <div class="asset-card" onclick="window.showChart('${asset.symbol}')">
+            <div>
+                <strong>${asset.name}</strong> (${asset.symbol})
+                <span class="info-icon" onclick="event.stopPropagation(); window.openDetails('${asset.symbol}')">ⓘ</span>
+                <br><small class="price-tag">$${price.toLocaleString()}</small>
+            </div>
+            <div class="controls">
+                <input type="number" id="qty-${asset.id}" value="0.1" step="0.01" onclick="event.stopPropagation()">
+                <div class="btn-group">
+                    <button class="btn-buy" onclick="event.stopPropagation(); window.handleTrade(${asset.id}, 'buy')">AL</button>
+                    <button class="btn-sell" onclick="event.stopPropagation(); window.handleTrade(${asset.id}, 'sell')">SAT</button>
+                </div>
+            </div>
+        </div>`;
+    });
+
+    list.innerHTML = html;
+
+    let totalDiv = document.querySelector(".total-balance");
+    if (!totalDiv) {
+        document.querySelector("header").insertAdjacentHTML('afterend', '<div class="total-balance"></div>');
+        totalDiv = document.querySelector(".total-balance");
+    }
+    totalDiv.innerHTML = `<h2>Toplam Portföy <span>$${total.toLocaleString('tr-TR', {minimumFractionDigits: 2})}</span></h2>`;
+}
+
+// 4. ETKİLEŞİM FONKSİYONLARI
+window.handleTrade = (id, type) => {
+    const qty = parseFloat(document.getElementById(`qty-${id}`).value);
+    if (type === 'buy') assets[id].balance += qty;
+    else if (assets[id].balance >= qty) assets[id].balance -= qty;
+
+    const log = document.getElementById("activity-log");
+    const li = document.createElement("li");
+    li.innerText = `${new Date().toLocaleTimeString()}: ${assets[id].symbol} ${type === 'buy' ? 'ALINDI' : 'SATILDI'} (${qty})`;
+    log.prepend(li);
+    updateUI();
+};
+
 window.openDetails = (symbol) => {
-    // Bilgileri yeni bir sekmede detay sayfası olarak açar
     window.open(`details.html?coin=${symbol.toLowerCase()}`, '_blank');
 };
 
-document.querySelector(".close-btn").onclick = () => document.getElementById("coin-modal").style.display = "none";
-window.onclick = (e) => { if (e.target == document.getElementById("coin-modal")) document.getElementById("coin-modal").style.display = "none"; };
-
 window.showChart = (symbol) => {
-    new TradingView.widget({ "width": "100%", "height": 600, "symbol": `BINANCE:${symbol}USDT`, "interval": "D", "theme": "dark", "style": "1", "locale": "tr", "container_id": "tradingview_chart" });
+    if (typeof TradingView !== 'undefined') {
+        new TradingView.widget({
+            "width": "100%", "height": 650, "symbol": `BINANCE:${symbol}USDT`,
+            "interval": "D", "theme": "dark", "style": "1", "locale": "tr",
+            "container_id": "tradingview_chart"
+        });
+    }
 };
 
+// 5. BAŞLATICI
 async function init() {
     const news = await fetchLiveNews();
-    if(news.length > 0) document.querySelector("#ticker-wrap").innerHTML = news.map(n => `<div class="ticker-item">📢 ${n.title.split(' - ')[0]}</div>`).join('');
-    const updatePrices = async () => {
-        const prices = await getLivePrices();
-        wallet.refreshPrices(prices);
-        document.querySelector("#status-text").innerText = `CANLI • ${new Date().toLocaleTimeString()}`;
+    const ticker = document.getElementById("ticker-wrap");
+    if (ticker && news.length) {
+        ticker.innerHTML = news.map(n => `<div class="ticker-item">📢 ${n.title}</div>`).join('');
+    }
+
+    const refresh = async () => {
+        currentPrices = await getLivePrices();
+        updateUI();
+        const status = document.getElementById("status-text");
+        if (status) status.innerText = `CANLI • ${new Date().toLocaleTimeString()}`;
     };
-    updatePrices(); setInterval(updatePrices, 2000);
+
+    refresh();
+    setInterval(refresh, 5000); // 5 saniyede bir güncelle
     window.showChart('BTC');
 }
+
 window.onload = init;
