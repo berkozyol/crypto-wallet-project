@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coin Analiz Paneli</title>
+    <style>
+        :root {
+            --coin-color: #4a90e2;
+            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 90%;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 50px;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            position: relative;
+            border-top: 10px solid var(--coin-color);
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            text-decoration: none;
+            color: #666;
+            font-weight: 600;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .back-btn:hover { color: var(--coin-color); }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        h1 span {
+            color: var(--coin-color);
+        }
+
+        .content-section {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        .info-box {
+            background: #fff;
+            padding: 25px;
+            border-radius: 20px;
+            border-left: 5px solid var(--coin-color);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        h3 {
+            color: var(--coin-color);
+            margin-top: 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 1rem;
+        }
+
+        p {
+            color: #444;
+            line-height: 1.8;
+            font-size: 1.1rem;
+            margin-bottom: 0;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 8px 20px;
+            background: var(--coin-color);
+            color: white;
+            border-radius: 50px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <a href="index.html" class="back-btn">← Terminale Dön</a>
+        
+        <div id="coin-badge" class="badge">Kripto Varlık Analizi</div>
+        <h1 id="coin-name">Yükleniyor...</h1>
+
+        <div class="content-section" id="coin-content">
+            </div>
+    </div>
+
+    <script>
+        const fullData = {
+            "btc": {
+                name: "Bitcoin",
+                symbol: "BTC",
+                color: "#f7931a",
+                bg: "linear-gradient(135deg, #fff5e6 0%, #f7931a22 100%)",
+                content: `
+                    <div class="info-box">
+                        <h3>Nedir?</h3>
+                        <p>Bitcoin (BTC), herhangi bir merkezi kuruluşa bağlı olmayan, blockchain teknolojisi üzerine inşa edilmiş ilk dijital para birimidir. Satoshi Nakamoto tarafından "Eşten Eşe Elektronik Nakit Sistemi" olarak tanımlanmıştır.</p>
+                    </div>
+                    <div class="info-box">
+                        <h3>Neden Güvenli?</h3>
+                        <p>Dünya çapındaki binlerce madenci (miner), Proof of Work algoritmasıyla ağı korur. Bu işlem gücü, Bitcoin'i hacklenmesi imkansıza yakın en güvenli bilgisayar ağı yapar.</p>
+                    </div>
+                    <div class="info-box">
+                        <h3>Sınırlı Arz</h3>
+                        <p>Bitcoin'in toplam arzı 21 milyon ile sabitlenmiştir. Her 4 yılda bir gerçekleşen 'Halving' (yarılanma) olayı ile yeni üretim hızı düşer, bu da onu enflasyona karşı korunaklı kılar.</p>
+                    </div>
+                `
+            },
+            "eth": {
+                name: "Ethereum",
+                symbol: "ETH",
+                color: "#627eea",
+                bg: "linear-gradient(135deg, #eef2ff 0%, #627eea22 100%)",
+                content: `
+                    <div class="info-box">
+                        <h3>Akıllı Sözleşme Devrimi</h3>
+                        <p>Ethereum, sadece bir para transfer aracı değil; üzerinde çalışan programların (akıllı sözleşmeler) asla durdurulamayacağı bir dünya bilgisayarıdır.</p>
+                    </div>
+                    <div class="info-box">
+                        <h3>Ekosistem Gücü</h3>
+                        <p>Bugün bildiğimiz NFT'ler, DeFi (Merkeziyetsiz Finans) protokolleri ve binlerce altcoin, Ethereum ağının üzerinde yaşamaktadır.</p>
+                    </div>
+                    <div class="info-box">
+                        <h3>Sürdürülebilirlik</h3>
+                        <p>Ethereum 2.0 güncellemesiyle Proof of Stake sistemine geçerek enerji tüketimini devasa oranda azaltmış, çevreci bir teknoloji haline gelmiştir.</p>
+                    </div>
+                `
+            },
+            "bnb": {
+                name: "Binance Coin",
+                symbol: "BNB",
+                color: "#f3ba2f",
+                bg: "linear-gradient(135deg, #fffbeb 0%, #f3ba2f22 100%)",
+                content: `
+                    <div class="info-box">
+                        <h3>Borsadan Dev Bir Ağa</h3>
+                        <p>Binance borsasının komisyon indirimi için çıkardığı bir token iken, bugün BNB Chain ismiyle dünyanın en çok kullanılan hızlı ve ucuz blockchain ağlarından birine dönüşmüştür.</p>
+                    </div>
+                    <div class="info-box">
+                        <h3>Yakım (Burn) Sistemi</h3>
+                        <p>Binance, kârının bir kısmıyla piyasadan düzenli BNB satın alıp yok eder. Bu "Auto-Burn" mekanizması, BNB'nin değerini uzun vadede destekler.</p>
+                    </div>
+                    <div class="info-box">
+                        <h3>Kullanım Alanı</h3>
+                        <p>Otel rezervasyonlarından, banka kartı harcamalarına ve ağ üzerindeki transfer ücretlerine kadar yüzlerce alanda aktif olarak kullanılır.</p>
+                    </div>
+                `
+            }
+        };
+
+        const params = new URLSearchParams(window.location.search);
+        const coinKey = params.get('coin');
+        const data = fullData[coinKey];
+
+        if (data) {
+            // Renkleri Dinamik Ayarla
+            document.documentElement.style.setProperty('--coin-color', data.color);
+            document.body.style.background = data.bg;
+            
+            document.getElementById('coin-name').innerHTML = `${data.name} <span>(${data.symbol})</span>`;
+            document.getElementById('coin-content').innerHTML = data.content;
+            document.getElementById('coin-badge').innerText = `${data.symbol} Teknik Analiz Raporu`;
+        }
+    </script>
+</body>
+</html>
