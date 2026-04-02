@@ -157,6 +157,72 @@ button {
     transition: 0.2s;
 }
 
+/* Ziyaretçi Bölümü Tasarımı */
+.visitor-section {
+    margin-top: 30px;
+    padding: 20px;
+    background: #f4f4f4; /* Formun arkası hafif gri */
+    border-radius: 10px;
+}
+
+#visitor-form {
+    margin-bottom: 20px;
+}
+
+#visitor-name {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 200px;
+}
+
+/* Listedeki İsimlerin Siyah Olmasını Sağlayan Kod */
+#display-visitors li {
+    color: #000000 !important; /* Kesinlikle Siyah */
+    background: #ffffff; /* Beyaz şerit üzerinde siyah yazı */
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    list-style: none;
+    font-weight: bold;
+    border-left: 5px solid #16a085;
+}
+
+#display-visitors li small {
+    color: #444444; /* Tarih biraz daha koyu gri */
+    font-weight: normal;
+    margin-left: 10px;
+}
+
+/* Ziyaretçi Bölümü Başlıklarını Siyah Yapar */
+.visitor-section h3, 
+.visitor-section h4 {
+    color: #000000 !important; /* Yazıları Siyah Yapar */
+    margin-bottom: 15px;
+    font-weight: 800; /* Daha belirgin (kalın) yapar */
+}
+
+/* Formun arka planını biraz daha açık yapalım ki siyah yazılar sırıtmasın */
+.visitor-section {
+    background-color: #ffffff; /* Arka planı beyaz yaptık */
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 40px;
+}
+
+/* Listeyi ve isimleri siyah tutmaya devam et */
+#display-visitors li {
+    color: #000000 !important;
+    background: #f0f0f0; /* Hafif gri şerit */
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    list-style: none;
+    font-weight: bold;
+    border-left: 5px solid #16a085;
+}
+
+
 .btn-buy { background: var(--buy-color); color: #000; }
 .btn-sell { background: var(--sell-color); color: #fff; }
 

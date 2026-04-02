@@ -117,4 +117,61 @@ async function init() {
     window.showChart('BTC');
 }
 
+
+const visitorForm = document.getElementById('visitor-form');
+const visitorList = document.getElementById('display-visitors');
+
+// Sayfa açıldığında eski ziyaretçileri yükle
+window.addEventListener('load', showVisitors);
+
+if (visitorForm) {
+    visitorForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const name = document.getElementById('visitor-name').value;
+        const date = new Date().toLocaleString(); // Otomatik tarih ve saat
+
+        const visitorData = { name, date };
+
+        // Mevcut listeyi al veya boş liste oluştur
+        let visitors = JSON.parse(localStorage.getItem('my_visitors')) || [];
+        
+        // Yeni ziyaretçiyi listeye ekle
+        visitors.push(visitorData);
+        
+        // Hafızaya geri kaydet
+        localStorage.setItem('my_visitors', JSON.stringify(visitors));
+
+        document.getElementById('visitor-name').value = ''; // Kutuyu temizle
+        showVisitors(); // Listeyi güncelle
+    });
+}
+
+function showVisitors() {
+    const visitors = JSON.parse(localStorage.getItem('my_visitors')) || [];
+    visitorList.innerHTML = ''; // Önce temizle
+
+    visitors.forEach(v => {
+        const li = document.createElement('li');
+        li.innerHTML = `<strong>${v.name}</strong> <span class="visit-date">${v.date}</span>`;
+        visitorList.appendChild(li);
+    });
+}
+// Listeyi Sıfırlama Butonu İşlemi
+const clearBtn = document.getElementById('clear-visitors');
+
+if (clearBtn) {
+    clearBtn.addEventListener('click', function() {
+        if (confirm("Tüm ziyaretçi listesini silmek istediğine emin misin?")) {
+            // Hafızadaki ziyaretçi verisini tamamen siler
+            localStorage.removeItem('wallet_visitors');
+            
+            // Ekrandaki listeyi anında temizlemek için fonksiyonu tekrar çağır
+            loadVisitors();
+            
+            alert("Liste başarıyla sıfırlandı.");
+        }
+    });
+}
+
 window.onload = init;
